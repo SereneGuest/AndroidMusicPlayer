@@ -1,0 +1,22 @@
+<resources>>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:textColorPrimary">@android:color/white</item>-->
+    </style>
+
+    <style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar" >
+
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.DayNight">
+        <item name="android:elevation">5dp</item>
+    </style>
+
+</resources>

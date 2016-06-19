@@ -1,0 +1,8 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="ic_menu_home" type="drawable">@mipmap/home</item>
+    <item name="ic_menu_list" type="drawable">@mipmap/list</item>
+    <item name="ic_menu_sounds" type="drawable">@mipmap/sounds</item>
+    <item name="ic_menu_skin" type="drawable">@mipmap/skin1</item>
+    <item name="ic_menu_settings" type="drawable">@mipmap/settings</item>
+    <item name="ic_menu_exit" type="drawable">@mipmap/exit2</item>
+</resources>

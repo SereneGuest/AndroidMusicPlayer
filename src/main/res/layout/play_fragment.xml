@@ -1,0 +1,158 @@
+<RelativeLayout
+    android:id="@+id/play_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!--<ImageView
+        android:id="@+id/album_img"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/main_bg"/>-->
+    <com.wenzhe.music.ui.AlbumView
+        android:id="@+id/album_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.wenzhe.music.ui.AlbumView>
+
+
+
+    <!--<TextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="#30000000"/>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/album_view">
+
+        <TextView
+            android:id="@+id/music_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/music_title"
+            android:singleLine="true"
+            android:text="歌曲名称"/>
+        <TextView
+            android:id="@+id/music_artist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:textColor="#ccffffff"
+            android:textSize="@dimen/music_artist"
+            android:singleLine="true"
+            android:text="艺术家"/>
+        <TextView
+            android:id="@+id/music_album"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:textColor="#ccffffff"
+            android:textSize="@dimen/music_album"
+            android:singleLine="true"
+            android:text="十一月的肖邦"/>
+
+        <SeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-16dp"
+            android:layout_marginRight="-16dp"
+            android:maxHeight="3dp"
+            android:thumb="@drawable/thumb_bar"
+            android:progressDrawable="@drawable/seek_bar"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/music_current_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#aaffffff"
+                android:textSize="@dimen/current_time"
+                android:gravity="start"
+                android:text="00:00"/>
+            <TextView
+                android:id="@+id/music_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/current_time"
+                android:textColor="#aaffffff"
+                android:gravity="end"
+                android:text="04:00"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginTop="-10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/music_shuffle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerCrop"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/playerview_shuffle_off"/>
+            <ImageButton
+                android:id="@+id/music_pre"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:scaleType="centerCrop"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@mipmap/widget_previous_normal"/>
+            <ImageButton
+                android:id="@+id/music_play"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:scaleType="centerCrop"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@mipmap/widget_play_normal"/>
+            <ImageButton
+                android:id="@+id/music_next"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:scaleType="centerCrop"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@mipmap/widget_next_normal"/>
+            <ImageButton
+                android:id="@+id/music_loop"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/playerview_repeat_off"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

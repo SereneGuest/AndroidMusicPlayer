@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="text_title">#555555</color>
+    <color name="text_artist">#666666</color>
+    <color name="rv_bg">#aaaaaa</color>
+    <color name="item_bg">#eeeeee</color>
+    <color name="white_bg">#eeeeee</color>
+    <color name="transparent">#55FFFFFF</color>
+    <color name="ripple_color">#ff9627e1</color>
+
+    <color name="notification_color">#323333</color>
+</resources>
