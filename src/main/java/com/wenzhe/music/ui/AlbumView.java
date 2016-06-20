@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.wenzhe.music.constants.AppConstant;
+import com.wenzhe.music.constants.MusicChangeType;
 import com.wenzhe.music.utils.Devices;
 
 
@@ -61,15 +62,28 @@ public class AlbumView extends RelativeLayout {
         return imageView;
     }
 
-    public void setImageWithAnimation(Bitmap bitmap) {
+    public void setImageWithAnimation(Bitmap bitmap, MusicChangeType type) {
         addView(createImageView(bitmap));
-        createReveal(getChildAt(getChildCount() - 1)).start();
+        createReveal(getChildAt(getChildCount() - 1),type).start();
 
     }
 
-    private Animator createReveal(View view) {
-        Animator animator1 = ViewAnimationUtils.createCircularReveal(view,width/2,
-                height/2,0,radius/2);
+    private Animator createReveal(View view,MusicChangeType type) {
+        Animator animator1;
+        switch (type) {
+            case nextChange:
+                animator1 = ViewAnimationUtils.createCircularReveal(view,0,
+                        height,0,radius);
+                break;
+            case previousChange:
+                animator1 = ViewAnimationUtils.createCircularReveal(view,width,
+                        height,0,radius);
+                break;
+            default:
+                animator1 = ViewAnimationUtils.createCircularReveal(view,width/2,
+                        height/2,0,radius/2);
+                break;
+        }
         animator1.setDuration(AppConstant.ANIMATION_DURATION);
         animator1.addListener(new Animator.AnimatorListener() {
             @Override
@@ -80,7 +94,7 @@ public class AlbumView extends RelativeLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 removeViewAt(0);
-                Log.e("wenzhe", "count:" + getChildCount());
+                //Log.e("wenzhe", "count:" + getChildCount());
             }
 
             @Override

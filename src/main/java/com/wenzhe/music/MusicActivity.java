@@ -132,6 +132,16 @@ public class MusicActivity extends AppCompatActivity
                 break;
         }
     }
+    //view click event
+    @Subscribe
+    public void onViewClick(View view) {
+        switch (view.getId()) {
+            case R.id.fab_playing:
+                goToPlayFragment();
+                break;
+        }
+    }
+
     @Override
     public void onBackStackChanged() {
         Log.d(TAG, "back stack count:" + fm.getBackStackEntryCount());

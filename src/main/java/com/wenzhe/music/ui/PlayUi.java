@@ -1,19 +1,14 @@
 package com.wenzhe.music.ui;
 
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
-import android.text.format.Formatter;
-import android.util.Log;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,7 +21,6 @@ import com.wenzhe.music.constants.MusicChangeType;
 import com.wenzhe.music.constants.PlayState;
 import com.wenzhe.music.constants.PlayType;
 import com.wenzhe.music.data.MusicInfo;
-import com.wenzhe.music.utils.Devices;
 import com.wenzhe.music.utils.MediaUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -101,11 +95,7 @@ public class PlayUi implements View.OnClickListener, SeekBar.OnSeekBarChangeList
     public void changeUi(MusicChangeAction action) {
         switch (action.getType()) {
             case nextChange:
-                /*setMusicInfo((MusicInfo) action.getInfo());
-                break;*/
             case previousChange:
-                /*setMusicInfo((MusicInfo) action.getInfo());
-                break;*/
             case currentMusicInfo:
                 setMusicInfo((MusicInfo) action.getInfo());
                 break;
@@ -151,7 +141,7 @@ public class PlayUi implements View.OnClickListener, SeekBar.OnSeekBarChangeList
     }
 
     public void setBitmapAndColor(int color, Bitmap bitmap,MusicChangeType type) {
-        albumView.setImageWithAnimation(bitmap);
+        albumView.setImageWithAnimation(bitmap,type);
         getValueAnimator(currentColor, color).start();
         currentColor = color;
     }

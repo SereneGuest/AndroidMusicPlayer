@@ -1,12 +1,12 @@
 package com.wenzhe.music.ui;
 
 
-import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
@@ -25,13 +25,15 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Created by wenzhe on 2016/4/26.
  */
-public class MusicUi {
+public class MusicUi implements View.OnClickListener {
 
     private View rootView;
     private Activity activity;
     private CollapsingToolbarLayout header;
     private ImageView headerImg;
     // private TextView imgCover;
+
+    private FloatingActionButton fabPlaying;
 
     private int currentColor;
 
@@ -64,6 +66,8 @@ public class MusicUi {
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        fabPlaying = (FloatingActionButton) rootView.findViewById(R.id.fab_playing);
+        fabPlaying.setOnClickListener(this);
         //imgCover = (TextView) rootView.findViewById(R.id.img_cover);
     }
 
@@ -113,4 +117,8 @@ public class MusicUi {
         return animator;
     }
 
+    @Override
+    public void onClick(View v) {
+        EventBus.getDefault().post(v);
+    }
 }
