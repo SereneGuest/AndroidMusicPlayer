@@ -9,7 +9,7 @@ import com.wenzhe.music.constants.PlayState;
  */
 public interface PlayListener {
     void onCompletion(MediaPlayer mp);
-    void onMusicStateChanged(PlayState state);
+    void onMusicStateChanged(String state);
     //void onSeekComplete(MediaPlayer mp);
     //void onError(MediaPlayer mp, int what, int extra);
 }

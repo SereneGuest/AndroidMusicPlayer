@@ -49,6 +49,7 @@ public class MusicUi implements View.OnClickListener {
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         toolbar.setTitle("Music");
+        //toolbar.setBackgroundColor(0x44000000);
         EventBus.getDefault().post(toolbar);
         header = (CollapsingToolbarLayout) rootView.findViewById(R.id
                 .collapse_layout);
@@ -83,6 +84,7 @@ public class MusicUi implements View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            activity.getWindow().setStatusBarColor(0x44000000);
         }
     }
 

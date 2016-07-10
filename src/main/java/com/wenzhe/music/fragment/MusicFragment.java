@@ -2,6 +2,7 @@ package com.wenzhe.music.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -49,6 +50,8 @@ public class MusicFragment extends Fragment implements MusicAdapter.ListItemClic
 
     private boolean isPause = false;
 
+    private Bitmap rawBitmap,targetBitmap;
+
     private ThreadPoolExecutor executor;
 
     @Override
@@ -92,16 +95,16 @@ public class MusicFragment extends Fragment implements MusicAdapter.ListItemClic
     public void onStateChange(MusicChangeAction action) {
         //handle all music change event from service and Ui
         switch (action.getType()) {
-            case serviceCreated:
+            case MusicChangeAction.SERVICE_CREATED:
                 // data prepare completely get list info
                 if (musicInfos == null) {
                     musicInfos = (List<MusicInfo>) action.getInfo();
                     setListAdapter(mUi.getListView());
                 }
                 break;
-            case nextChange:
-            case previousChange:
-            case currentMusicInfo:
+            case MusicChangeAction.NEXT_MUSIC:
+            case MusicChangeAction.PRE_MUSIC:
+            case MusicChangeAction.CURRENT_MUSIC:
                 startLoadBitmapAndColor((MusicInfo) action.getInfo(),action.getType());
                 break;
         }
@@ -113,7 +116,7 @@ public class MusicFragment extends Fragment implements MusicAdapter.ListItemClic
         mUi.setBitmapAndColor(action.getColor(), action.getBitmap(), isPause);
     }
 
-    private void startLoadBitmapAndColor(MusicInfo info, MusicChangeType type) {
+    private void startLoadBitmapAndColor(MusicInfo info, String type) {
         executor.execute(new BitmapTask(getActivity(),
                 info.getAlbumId(), 0, BitmapTask.COLOR_VIBRANT_DARK,type));
     }
@@ -147,7 +150,7 @@ public class MusicFragment extends Fragment implements MusicAdapter.ListItemClic
 
     @Override
     public void onItemClicked(int position) {
-        EventBus.getDefault().post(new PlayAction<>(PlayType.fromListPlay, position));
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.LIST_PLAY, position));
     }
 
     @Override

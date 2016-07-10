@@ -93,7 +93,7 @@ public class MusicActivity extends AppCompatActivity
                 goToPlayFragment();
                 break;
             case R.id.nav_exit:
-                EventBus.getDefault().post(new PlayAction<>(PlayType.exit, null));
+                EventBus.getDefault().post(new PlayAction<>(PlayAction.EXIT, null));
                 finish();
                 break;
         }

@@ -21,6 +21,7 @@ import com.wenzhe.music.constants.MusicChangeType;
 import com.wenzhe.music.constants.PlayState;
 import com.wenzhe.music.constants.PlayType;
 import com.wenzhe.music.data.MusicInfo;
+import com.wenzhe.music.helper.PlayHelper;
 import com.wenzhe.music.utils.MediaUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -94,14 +95,13 @@ public class PlayUi implements View.OnClickListener, SeekBar.OnSeekBarChangeList
 
     public void changeUi(MusicChangeAction action) {
         switch (action.getType()) {
-            case nextChange:
-            case previousChange:
-            case currentMusicInfo:
+            case MusicChangeAction.NEXT_MUSIC:
+            case MusicChangeAction.PRE_MUSIC:
+            case MusicChangeAction.CURRENT_MUSIC:
                 setMusicInfo((MusicInfo) action.getInfo());
                 break;
-            case stateChange:
-                PlayState state = (PlayState) action.getInfo();
-                if (state == PlayState.playing) {
+            case MusicChangeAction.STATE_CHANGED:
+                if (action.getInfo() == PlayHelper.STATE_PLAYING) {
                     btnPlay.setImageResource(R.mipmap.widget_pause_normal);
                 } else {
                     btnPlay.setImageResource(R.mipmap.widget_play_normal);
@@ -129,18 +129,18 @@ public class PlayUi implements View.OnClickListener, SeekBar.OnSeekBarChangeList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.music_pre:
-                EventBus.getDefault().post(new PlayAction<>(PlayType.previous,null));
+                EventBus.getDefault().post(new PlayAction<>(PlayAction.PREVIOUS,null));
                 break;
             case R.id.music_next:
-                EventBus.getDefault().post(new PlayAction<>(PlayType.next, null));
+                EventBus.getDefault().post(new PlayAction<>(PlayAction.NEXT, null));
                 break;
             case R.id.music_play:
-                EventBus.getDefault().post(new PlayAction<>(PlayType.fromButtonPlay, null));
+                EventBus.getDefault().post(new PlayAction<>(PlayAction.BUTTON_PLAY, null));
                 break;
         }
     }
 
-    public void setBitmapAndColor(int color, Bitmap bitmap,MusicChangeType type) {
+    public void setBitmapAndColor(int color, Bitmap bitmap,String type) {
         albumView.setImageWithAnimation(bitmap,type);
         getValueAnimator(currentColor, color).start();
         currentColor = color;
@@ -166,12 +166,13 @@ public class PlayUi implements View.OnClickListener, SeekBar.OnSeekBarChangeList
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        EventBus.getDefault().post(new PlayAction<>(PlayType.stopTimer,null));
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.STOP_TIMER,null));
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        EventBus.getDefault().post(new PlayAction<>(PlayType.seekBarChange,seekBar.getProgress()));
-        EventBus.getDefault().post(new PlayAction<>(PlayType.startTimer,null));
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.SEEKBAR_CHANGE,seekBar.getProgress
+                ()));
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.START_TIMER,null));
     }
 }

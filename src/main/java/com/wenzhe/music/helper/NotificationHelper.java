@@ -69,10 +69,11 @@ public class NotificationHelper {
         Notification.Builder builder = new Notification.Builder(context);
         builder.setSmallIcon(R.drawable.ic_icon_notification);
         builder.setAutoCancel(true);
+        builder.setVisibility(Notification.VISIBILITY_PUBLIC);
         return builder;
     }
 
-    public void show(MusicInfo info, PlayState state) {
+    public void show(MusicInfo info, String state) {
         //managerCompat.notify(NOTIFICATION_ID, createNotification(info));
         new MyTask(createNotification(), info, state).execute(info.getAlbumId());
     }
@@ -81,9 +82,9 @@ public class NotificationHelper {
         private Notification.Builder builder;
         private MusicInfo info;
         private RemoteViews remoteViews, bigRemoteViews;
-        private PlayState state;
+        private String state;
 
-        public MyTask(Notification.Builder builder, MusicInfo info, PlayState state) {
+        public MyTask(Notification.Builder builder, MusicInfo info, String state) {
             this.info = info;
             this.builder = builder;
             this.state = state;
@@ -101,16 +102,16 @@ public class NotificationHelper {
             super.onPostExecute(bitmap);
             setRemoteViews(bitmap, state);
             Notification notification = builder.build();
-            notification.contentView = remoteViews;
             notification.bigContentView = bigRemoteViews;
+            notification.contentView = remoteViews;
             manager.notify(NOTIFICATION_ID, notification);
         }
 
-        private void setRemoteViews(Bitmap bitmap,PlayState state) {
+        private void setRemoteViews(Bitmap bitmap,String state) {
             remoteViews = new RemoteViews(context.getPackageName(), R.layout
-                    .notification_layout);
+                    .notification_white_layout);
             bigRemoteViews = new RemoteViews(context.getPackageName(), R.layout
-                    .notification_layout_big);
+                    .notification_white_layout_big);
             remoteViews.setTextViewText(R.id.notification_title, info.getTitle());
             remoteViews.setTextViewText(R.id.notification_artist, info.getArtist());
 
@@ -127,7 +128,7 @@ public class NotificationHelper {
             bigRemoteViews.setOnClickPendingIntent(R.id.notification_next_big, nextIntent);
             bigRemoteViews.setOnClickPendingIntent(R.id.notification_container_big,activityIntent);
 
-            if (state == PlayState.pause) {
+            if (state == PlayHelper.STATE_PAUSE) {
                 remoteViews.setImageViewResource(R.id.notification_play, R.mipmap
                         .widget_play_normal);
                 bigRemoteViews.setImageViewResource(R.id.notification_play_big, R.mipmap

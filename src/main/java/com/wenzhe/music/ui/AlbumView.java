@@ -16,6 +16,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.wenzhe.music.action.MusicChangeAction;
 import com.wenzhe.music.constants.AppConstant;
 import com.wenzhe.music.constants.MusicChangeType;
 import com.wenzhe.music.utils.Devices;
@@ -62,20 +63,20 @@ public class AlbumView extends RelativeLayout {
         return imageView;
     }
 
-    public void setImageWithAnimation(Bitmap bitmap, MusicChangeType type) {
+    public void setImageWithAnimation(Bitmap bitmap, String type) {
         addView(createImageView(bitmap));
         createReveal(getChildAt(getChildCount() - 1),type).start();
 
     }
 
-    private Animator createReveal(View view,MusicChangeType type) {
+    private Animator createReveal(View view,String type) {
         Animator animator1;
         switch (type) {
-            case nextChange:
+            case MusicChangeAction.NEXT_MUSIC:
                 animator1 = ViewAnimationUtils.createCircularReveal(view,0,
                         height,0,radius);
                 break;
-            case previousChange:
+            case MusicChangeAction.PRE_MUSIC:
                 animator1 = ViewAnimationUtils.createCircularReveal(view,width,
                         height,0,radius);
                 break;

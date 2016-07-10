@@ -12,4 +12,7 @@
     <color name="ripple_color">#ff9627e1</color>
 
     <color name="notification_color">#323333</color>
+
+    <color name="notification_dark_title">#434242</color>
+    <color name="notification_dart_artist">#4e4e4e</color>
 </resources>

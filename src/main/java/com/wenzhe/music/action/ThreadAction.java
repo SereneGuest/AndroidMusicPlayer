@@ -17,15 +17,15 @@ public class ThreadAction {
         return bitmap;
     }
 
-    public MusicChangeType getType() {
+    public String getType() {
         return type;
     }
 
     private int color;
     private Bitmap bitmap;
-    private MusicChangeType type;
+    private String type;
 
-    public ThreadAction(int color, Bitmap bitmap, MusicChangeType type) {
+    public ThreadAction(int color, Bitmap bitmap, String type) {
         this.color = color;
         this.bitmap = bitmap;
         this.type = type;

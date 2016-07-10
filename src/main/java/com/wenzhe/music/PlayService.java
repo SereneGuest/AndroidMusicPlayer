@@ -78,9 +78,9 @@ public class PlayService extends Service implements PlayListener, TimerListener 
         }
 
         if (musicInfos != null && musicInfos.size() > 0) {
-            EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeType.serviceCreated,
+            EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeAction.SERVICE_CREATED,
                     musicInfos));
-            EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeType.currentMusicInfo,
+            EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeAction.CURRENT_MUSIC,
                     musicInfos.get(mCurrentMusic)));
         }
 
@@ -105,37 +105,37 @@ public class PlayService extends Service implements PlayListener, TimerListener 
     @Subscribe
     public void PlayAction(PlayAction action) {
         switch (action.getType()) {
-            case fromListPlay:
+            case PlayAction.LIST_PLAY:
                 mCurrentMusic = (int) action.getInfo();
                 playHelper.startPlay(musicInfos.get(mCurrentMusic));
-                EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeType
-                        .currentMusicInfo, musicInfos.get(mCurrentMusic)));
+                EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeAction.CURRENT_MUSIC
+                        , musicInfos.get(mCurrentMusic)));
                 break;
-            case previous:
+            case PlayAction.PREVIOUS:
                 previous();
                 break;
-            case next:
+            case PlayAction.NEXT:
                 next();
                 break;
-            case fromButtonPlay:
+            case PlayAction.BUTTON_PLAY:
                 playHelper.play(musicInfos.get(mCurrentMusic));
                 break;
-            case requestInfo:
-                EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeType
-                        .currentMusicInfo, musicInfos.get(mCurrentMusic)));
-                EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeType.stateChange,
+            case PlayAction.REQUEST_INFO:
+                EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeAction.CURRENT_MUSIC,
+                        musicInfos.get(mCurrentMusic)));
+                EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeAction.STATE_CHANGED,
                         playHelper.getCurrentState()));
                 break;
-            case startTimer:
+            case PlayAction.START_TIMER:
                 timerHelper.startTimer();
                 break;
-            case stopTimer:
+            case PlayAction.STOP_TIMER:
                 timerHelper.stopTimer();
                 break;
-            case seekBarChange:
+            case PlayAction.SEEKBAR_CHANGE:
                 playHelper.seekTo((int) action.getInfo());
                 break;
-            case exit:
+            case PlayAction.EXIT:
                 stopSelf();
                 break;
         }
@@ -148,7 +148,7 @@ public class PlayService extends Service implements PlayListener, TimerListener 
             mCurrentMusic = 0;
         }
         playHelper.startPlay(musicInfos.get(mCurrentMusic));
-        EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeType.nextChange, musicInfos
+        EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeAction.NEXT_MUSIC, musicInfos
                 .get(mCurrentMusic)));
         notificationHelper.show(musicInfos.get(mCurrentMusic), playHelper.getCurrentState());
     }
@@ -160,7 +160,7 @@ public class PlayService extends Service implements PlayListener, TimerListener 
             mCurrentMusic = musicInfos.size() - 1;
         }
         playHelper.startPlay(musicInfos.get(mCurrentMusic));
-        EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeType.previousChange,
+        EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeAction.PRE_MUSIC,
                 musicInfos.get(mCurrentMusic)));
         notificationHelper.show(musicInfos.get(mCurrentMusic), playHelper.getCurrentState());
     }
@@ -199,8 +199,8 @@ public class PlayService extends Service implements PlayListener, TimerListener 
     }
 
     @Override
-    public void onMusicStateChanged(PlayState state) {
-        EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeType.stateChange, state));
+    public void onMusicStateChanged(String state) {
+        EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeAction.STATE_CHANGED, state));
         notificationHelper.show(musicInfos.get(mCurrentMusic), state);
     }
 
@@ -208,7 +208,7 @@ public class PlayService extends Service implements PlayListener, TimerListener 
     @Override
     public void onStartJob() {
         int currentProgress = playHelper.getCurrentProgress();
-        EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeType.updateSeekBar,
+        EventBus.getDefault().post(new MusicChangeAction<>(MusicChangeAction.UPDATE_SEEKBAR,
                 currentProgress));
     }
 

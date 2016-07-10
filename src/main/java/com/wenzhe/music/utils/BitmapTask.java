@@ -29,10 +29,10 @@ public class BitmapTask implements Runnable {
     private long albumId;
     private Context context;
     private int colorType;
-    private MusicChangeType type;
+    private String type;
 
     public BitmapTask(Context context, long albumId, int inSampleSize,int colorType,
-                      MusicChangeType type) {
+                      String type) {
         this.inSampleSize = inSampleSize;
         this.albumId = albumId;
         this.context = context;

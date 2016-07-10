@@ -13,11 +13,18 @@ import java.io.IOException;
 /**
  * Created by wenzhe on 2016/4/29.
  */
-public class PlayHelper implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener {
+public class PlayHelper implements MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener,
+        MediaPlayer.OnSeekCompleteListener {
+
+    public static final String STATE_PLAYING = "state_playing";
+    public static final String STATE_PAUSE = "state_pause";
+    public static final String STATE_STOP = "state_stop";
+    public static final String STATE_PREPARE = "state_prepare";
 
     private MediaPlayer mediaPlayer;
     private Context context;
-    private PlayState state = PlayState.stop;
+    private String state = STATE_STOP;
     private PlayListener playerListener;
 
     public PlayHelper(Context context,PlayListener playerListener) {
@@ -27,13 +34,13 @@ public class PlayHelper implements MediaPlayer.OnPreparedListener, MediaPlayer.O
 
     public void play(MusicInfo info){
         switch (state) {
-            case stop:
+            case STATE_STOP:
                 startPlay(info);
                 break;
-            case pause:
+            case STATE_PAUSE:
                 resume();
                 break;
-            case playing:
+            case STATE_PLAYING:
                 pause();
                 break;
         }
@@ -43,14 +50,14 @@ public class PlayHelper implements MediaPlayer.OnPreparedListener, MediaPlayer.O
     private void resume() {
         if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
             mediaPlayer.start();
-            state = PlayState.playing;
+            state = STATE_PLAYING;
             playerListener.onMusicStateChanged(state);
         }
     }
 
     public void startPlay(MusicInfo info) {
         createMediaPlayer();
-        state = PlayState.prepare;
+        state = STATE_PREPARE;
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             mediaPlayer.setDataSource(info.getUrl());
@@ -63,7 +70,7 @@ public class PlayHelper implements MediaPlayer.OnPreparedListener, MediaPlayer.O
     public void pause(){
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
-            state = PlayState.pause;
+            state = STATE_PAUSE;
             playerListener.onMusicStateChanged(state);
         }
     }
@@ -88,12 +95,12 @@ public class PlayHelper implements MediaPlayer.OnPreparedListener, MediaPlayer.O
         }
     }
 
-    public PlayState getCurrentState() {
+    public String getCurrentState() {
         return state;
     }
 
     public int getCurrentProgress() {
-        if (state == PlayState.prepare) {
+        if (state == STATE_PREPARE) {
             return 0;
         }
         return mediaPlayer == null ? 0 : mediaPlayer.getCurrentPosition();
@@ -107,14 +114,14 @@ public class PlayHelper implements MediaPlayer.OnPreparedListener, MediaPlayer.O
             mediaPlayer.reset();
             mediaPlayer.release();
             mediaPlayer = null;
-            state =PlayState.stop;
+            state =STATE_STOP;
         }
     }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
         mp.start();
-        state = PlayState.playing;
+        state = STATE_PLAYING;
         playerListener.onMusicStateChanged(state);
     }
 
@@ -132,7 +139,7 @@ public class PlayHelper implements MediaPlayer.OnPreparedListener, MediaPlayer.O
 
     @Override
     public void onSeekComplete(MediaPlayer mp) {
-        if (state == PlayState.playing) {
+        if (state == STATE_PLAYING) {
             mp.start();
         }
     }

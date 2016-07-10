@@ -89,7 +89,7 @@ public class NotificationCompatHelper {
         protected Bitmap doInBackground(Long... params) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 2;
-            return MediaUtils.getAlbumImgBitmap(params[0].longValue(), context, options);
+            return MediaUtils.getAlbumImgBitmap(params[0], context, options);
         }
 
         @Override

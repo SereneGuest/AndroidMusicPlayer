@@ -51,21 +51,21 @@ public class PlayFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        EventBus.getDefault().post(new PlayAction<>(PlayType.requestInfo,null));
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.REQUEST_INFO,null));
         Log.e(TAG, "onViewCreate");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        EventBus.getDefault().post(new PlayAction<>(PlayType.startTimer,null));
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.START_TIMER,null));
         Log.e(TAG, "onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        EventBus.getDefault().post(new PlayAction<>(PlayType.stopTimer,null));
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.STOP_TIMER,null));
         Log.e(TAG, "onPause");
     }
 
@@ -74,15 +74,15 @@ public class PlayFragment extends Fragment {
     public void onStateChange(MusicChangeAction action) {
         //handle all music change event from service and Ui
         switch (action.getType()) {
-            case serviceCreated:
+            case MusicChangeAction.SERVICE_CREATED:
                 break;
-            case nextChange:
-            case previousChange:
-            case currentMusicInfo:
-            case stateChange:
+            case MusicChangeAction.NEXT_MUSIC:
+            case MusicChangeAction.PRE_MUSIC:
+            case MusicChangeAction.CURRENT_MUSIC:
+            case MusicChangeAction.STATE_CHANGED:
                 mUi.changeUi(action);
                 break;
-            case updateSeekBar:
+            case MusicChangeAction.UPDATE_SEEKBAR:
                 mUi.updateSeekBar((int)action.getInfo());
                 break;
         }

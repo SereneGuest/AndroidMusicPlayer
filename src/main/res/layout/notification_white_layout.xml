@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:id="@+id/notification_container"
               android:gravity="center"
-              android:background="@color/notification_color"
+              android:background="@android:color/background_light"
               android:orientation="horizontal">
 
     <ImageView
@@ -26,6 +26,7 @@
             android:singleLine="true"
             android:layout_weight="3"
             android:textSize="@dimen/notification_title"
+            android:textColor="@color/notification_dark_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="Title"/>
@@ -34,6 +35,7 @@
             android:singleLine="true"
             android:layout_weight="2"
             android:textSize="@dimen/notification_artist"
+            android:textColor="@color/notification_dart_artist"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="artist"/>
@@ -50,6 +52,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@mipmap/widget_previous_normal"
+            android:tint="@color/notification_dart_artist"
             android:background="?android:selectableItemBackgroundBorderless"/>
         <ImageView
             android:id="@+id/notification_play"
@@ -57,12 +60,14 @@
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:tint="@color/notification_dart_artist"
             android:src="@mipmap/widget_play_normal"
             android:background="?android:selectableItemBackgroundBorderless"/>
         <ImageView
             android:id="@+id/notification_next"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:tint="@color/notification_dart_artist"
             android:src="@mipmap/widget_next_normal"
             android:background="?android:selectableItemBackgroundBorderless"/>
 
