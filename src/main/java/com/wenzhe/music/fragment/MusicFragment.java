@@ -45,12 +45,10 @@ import java.util.concurrent.TimeUnit;
 public class MusicFragment extends Fragment implements MusicAdapter.ListItemClickListener {
 
 
+    private final String TAG = this.getClass().getSimpleName();
+
     private List<MusicInfo> musicInfos;
     private MusicUi mUi;
-
-    private boolean isPause = false;
-
-    private Bitmap rawBitmap,targetBitmap;
 
     private ThreadPoolExecutor executor;
 
@@ -90,6 +88,12 @@ public class MusicFragment extends Fragment implements MusicAdapter.ListItemClic
         Log.e(this.getClass().getSimpleName(), "onViewCreated");
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+
     //负责接受service返回的事件，改变对应UI
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStateChange(MusicChangeAction action) {
@@ -101,11 +105,15 @@ public class MusicFragment extends Fragment implements MusicAdapter.ListItemClic
                     musicInfos = (List<MusicInfo>) action.getInfo();
                     setListAdapter(mUi.getListView());
                 }
+                EventBus.getDefault().post(new PlayAction<>(PlayAction.NEED_UPDATE_UI, true));
+                EventBus.getDefault().post(new PlayAction<>(PlayAction.REQUEST_INFO,null));
                 break;
             case MusicChangeAction.NEXT_MUSIC:
             case MusicChangeAction.PRE_MUSIC:
             case MusicChangeAction.CURRENT_MUSIC:
-                startLoadBitmapAndColor((MusicInfo) action.getInfo(),action.getType());
+                MusicInfo info = (MusicInfo) action.getInfo();
+                mUi.setToolbarTitle(info.getTitle());
+                startLoadBitmapAndColor(info,action.getType());
                 break;
         }
         System.gc();
@@ -113,16 +121,15 @@ public class MusicFragment extends Fragment implements MusicAdapter.ListItemClic
     //bitmap加载完后调用，
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBitmapAndColorLoaded(ThreadAction action) {
-        mUi.setBitmapAndColor(action.getColor(), action.getBitmap(), isPause);
+        mUi.setBitmapAndColor(action.getColor(), action.getBitmap());
     }
 
     private void startLoadBitmapAndColor(MusicInfo info, String type) {
         executor.execute(new BitmapTask(getActivity(),
-                info.getAlbumId(), 0, BitmapTask.COLOR_VIBRANT_DARK,type));
+                info.getAlbumId(), BitmapTask.COLOR_VIBRANT_DARK,type));
     }
 
     public void setListAdapter(RecyclerView recyclerView) {
-        //musicInfos = MediaInfo.getMusicInfo(getContext());
         if (musicInfos == null || musicInfos.size() < 1) {
             return;
         }
@@ -156,13 +163,12 @@ public class MusicFragment extends Fragment implements MusicAdapter.ListItemClic
     @Override
     public void onResume() {
         super.onResume();
-        isPause = false;
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.REQUEST_INFO,null));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        isPause = true;
     }
 
     @Override

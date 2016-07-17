@@ -44,6 +44,12 @@ public class MusicActivity extends AppCompatActivity
         EventBus.getDefault().register(this);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.NEED_UPDATE_UI,true));
+    }
+
     private void initView() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -110,6 +116,11 @@ public class MusicActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.NEED_UPDATE_UI,false));
+    }
 
     @Override
     protected void onDestroy() {

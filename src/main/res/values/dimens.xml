@@ -24,4 +24,6 @@
 
     <dimen name="notification_title">16dp</dimen>
     <dimen name="notification_artist">14dp</dimen>
+
+    <dimen name="notification_big">110dp</dimen>
 </resources>

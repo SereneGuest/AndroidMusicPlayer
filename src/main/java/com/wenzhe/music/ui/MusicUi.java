@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class MusicUi implements View.OnClickListener {
     private FloatingActionButton fabPlaying;
 
     private int currentColor;
+    private Toolbar toolbar;
 
 
     public MusicUi(Activity activity, LayoutInflater inflater, ViewGroup container) {
@@ -47,7 +49,7 @@ public class MusicUi implements View.OnClickListener {
     private void initView(View rootView, Activity activity) {
         setWindowFlag(activity.getWindow());
 
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         toolbar.setTitle("Music");
         //toolbar.setBackgroundColor(0x44000000);
         EventBus.getDefault().post(toolbar);
@@ -88,17 +90,16 @@ public class MusicUi implements View.OnClickListener {
         }
     }
 
-    public void setBitmapAndColor(int color, Bitmap bitmap,boolean isPause) {
+    public void setBitmapAndColor(int color, Bitmap bitmap) {
         //imgCover.setBackgroundColor(color);
         //imgCover.setAlpha(0.3f);
         headerImg.setImageBitmap(bitmap);
-        if (isPause) {
-            setColor(color);
-        } else {
-            getValueAnimator(currentColor,color).start();
-        }
+        getValueAnimator(currentColor,color).start();
         currentColor = color;
+    }
 
+    public void setToolbarTitle(String title) {
+        header.setTitle(title);
     }
 
     private void setColor(int color) {

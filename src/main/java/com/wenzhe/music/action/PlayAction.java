@@ -19,6 +19,7 @@ public class PlayAction<T> {
     public static final String STOP_TIMER = "stop_timer";
     public static final String SEEKBAR_CHANGE = "seek_bar_change";
     public static final String EXIT = "exit";
+    public static final String NEED_UPDATE_UI = "need_update_ui";
 
     private String type;
     @Nullable

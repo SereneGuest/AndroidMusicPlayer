@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.graphics.Palette;
+import android.util.Log;
+import android.view.WindowManager;
 
 
 import com.wenzhe.music.action.ThreadAction;
@@ -24,30 +26,39 @@ public class BitmapTask implements Runnable {
     public static final int COLOR_VIBRANT_DARK = 0X1115;
     public static final int COLOR_VIBRANT_LIGHT = 0X1116;
     public static final int COLOR_DEFAULT = 0xFFD7A652;
+    public  final String TAG = this.getClass().getSimpleName();
 
-    private int inSampleSize;
     private long albumId;
     private Context context;
     private int colorType;
     private String type;
+    private int albumWidth;
 
-    public BitmapTask(Context context, long albumId, int inSampleSize,int colorType,
+    //private static Bitmap albumArt;
+
+    public BitmapTask(Context context, long albumId, int colorType,
                       String type) {
-        this.inSampleSize = inSampleSize;
         this.albumId = albumId;
         this.context = context;
         this.colorType = colorType;
         this.type = type;
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        albumWidth = Devices.getScreenWidth(windowManager);
+        //albumHeight = (int) Devices.getAlbumImgHeight(windowManager);
     }
 
     @Override
     public void run() {
         BitmapFactory.Options options = new BitmapFactory.Options();
-        if (inSampleSize > 0) {
-            options.inSampleSize = this.inSampleSize;
-        }
-        Bitmap bitmap = MediaUtils.getAlbumImgBitmap(albumId, context, options);
-        Palette palette = Palette.from(bitmap).generate();
+        MediaUtils.getArtworkFromFile(context, albumId, options, true);
+        //Log.e(TAG,"width:"+options.outWidth+" height:"+options.outHeight);
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inScaled = true;
+        options.inDensity = options.outWidth;
+        options.inTargetDensity = albumWidth;
+        Bitmap albumArt = MediaUtils.getArtworkFromFile(context, albumId, options, false);
+        //Log.e(TAG,"width1:"+albumArt.getWidth()+" height1:"+albumArt.getHeight());
+        Palette palette = Palette.from(albumArt).generate();
         int color = COLOR_DEFAULT;
         switch (colorType) {
             case COLOR_MUTE:
@@ -88,6 +99,6 @@ public class BitmapTask implements Runnable {
                 break;
 
         }
-        EventBus.getDefault().post(new ThreadAction(color,bitmap,this.type));
+        EventBus.getDefault().post(new ThreadAction(color,albumArt,this.type));
     }
 }

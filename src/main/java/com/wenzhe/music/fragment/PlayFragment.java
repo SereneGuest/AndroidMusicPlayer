@@ -1,8 +1,6 @@
 package com.wenzhe.music.fragment;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,20 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wenzhe.music.R;
 import com.wenzhe.music.action.MusicChangeAction;
 import com.wenzhe.music.action.PlayAction;
 import com.wenzhe.music.action.ThreadAction;
-import com.wenzhe.music.constants.PlayType;
-import com.wenzhe.music.data.MusicInfo;
 import com.wenzhe.music.ui.PlayUi;
-import com.wenzhe.music.utils.BitmapTask;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
 
 /**
  * Created by wenzhe on 2016/4/24.
@@ -51,13 +44,18 @@ public class PlayFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        EventBus.getDefault().post(new PlayAction<>(PlayAction.REQUEST_INFO,null));
         Log.e(TAG, "onViewCreate");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        EventBus.getDefault().post(new PlayAction<>(PlayAction.REQUEST_INFO,null));
         EventBus.getDefault().post(new PlayAction<>(PlayAction.START_TIMER,null));
         Log.e(TAG, "onResume");
     }

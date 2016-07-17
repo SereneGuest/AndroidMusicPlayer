@@ -1,24 +1,18 @@
 package com.wenzhe.music.ui;
 
 import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.wenzhe.music.action.MusicChangeAction;
 import com.wenzhe.music.constants.AppConstant;
-import com.wenzhe.music.constants.MusicChangeType;
 import com.wenzhe.music.utils.Devices;
 
 

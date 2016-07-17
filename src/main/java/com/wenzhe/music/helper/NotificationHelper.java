@@ -36,6 +36,9 @@ public class NotificationHelper {
     public final static String NOTIFICATION_NEXT = "notification_next";
     public final static String NOTIFICATION_ACTIVITY = "notification_activity";
 
+    private Bitmap targetBitmap;
+    private int width;
+
     //private long currentMusicId = -1;
 
     private PendingIntent playIntent, previousIntent, nextIntent, activityIntent;
@@ -46,7 +49,7 @@ public class NotificationHelper {
         manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
-        playIntent = PendingIntent.getService(context, REQUEST_CODE, new Intent(NOTIFICATION_PLAY)
+        /*playIntent = PendingIntent.getService(context, REQUEST_CODE, new Intent(NOTIFICATION_PLAY)
                 .setClass(context, PlayService.class), PendingIntent.FLAG_CANCEL_CURRENT);
 
         previousIntent = PendingIntent.getService(context, REQUEST_CODE, new Intent
@@ -54,13 +57,26 @@ public class NotificationHelper {
                 .setClass(context, PlayService.class), PendingIntent.FLAG_CANCEL_CURRENT);
 
         nextIntent = PendingIntent.getService(context, REQUEST_CODE, new Intent(NOTIFICATION_NEXT)
-                .setClass(context, PlayService.class), PendingIntent.FLAG_CANCEL_CURRENT);
+                .setClass(context, PlayService.class), PendingIntent.FLAG_CANCEL_CURRENT);*/
 
         activityIntent = PendingIntent.getActivity(context, REQUEST_CODE, new Intent
                 (NOTIFICATION_ACTIVITY)
                 .setClass(context, MusicActivity.class), PendingIntent.FLAG_CANCEL_CURRENT);
+        playIntent = PendingIntent.getBroadcast(context, REQUEST_CODE,
+                new Intent(NOTIFICATION_PLAY), PendingIntent.FLAG_CANCEL_CURRENT);
+
+        previousIntent = PendingIntent.getBroadcast(context, REQUEST_CODE,
+                new Intent(NOTIFICATION_PREVIOUS), PendingIntent.FLAG_CANCEL_CURRENT);
+
+        nextIntent = PendingIntent.getBroadcast(context, REQUEST_CODE,
+                new Intent(NOTIFICATION_NEXT), PendingIntent.FLAG_CANCEL_CURRENT);
+
+        /*activityIntent = PendingIntent.getBroadcast(context, REQUEST_CODE,
+                new Intent(NOTIFICATION_ACTIVITY), PendingIntent.FLAG_CANCEL_CURRENT);*/
 
         manager.cancelAll();
+
+        width = context.getResources().getDimensionPixelSize(R.dimen.notification_big);
     }
 
     private Notification.Builder createNotification() {
@@ -92,9 +108,22 @@ public class NotificationHelper {
 
         @Override
         protected Bitmap doInBackground(Long... params) {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 2;
-                return MediaUtils.getAlbumImgBitmap(params[0], context, options);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            MediaUtils.getArtworkFromFile(context, params[0], options, true);
+            if (targetBitmap == null) {
+                options.inPreferredConfig = Bitmap.Config.RGB_565;
+                options.inScaled = true;
+                options.inDensity = options.outWidth;
+                options.inTargetDensity = width;
+                targetBitmap = MediaUtils.getArtworkFromFile(context, params[0], options, false);
+            } else {
+                options.inPreferredConfig = Bitmap.Config.RGB_565;
+                options.inBitmap = targetBitmap;
+                targetBitmap = MediaUtils.getArtworkFromFile(context, params[0], options, false);
+            }
+                /*BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 2;*/
+            return targetBitmap;
         }
 
         @Override
